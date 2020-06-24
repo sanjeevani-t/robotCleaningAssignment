@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Robot;
+namespace Tests\Cleanning;
 
-
-use CleaningRobot;
+use App\Cleanning\CleaningRobot;
 use PHPUnit\Framework\TestCase;
 
 class CleaningRobotTest extends TestCase
@@ -33,8 +32,8 @@ class CleaningRobotTest extends TestCase
     */
     public function getTestDataProvider(): array {
         return [
-            "hard" => ["hard", 40.0, ["cleaning - 1 : " => 40.0, "charging_1" => 20.0]],
-            "carpet" => ["carpet", 20.0, ["cleaning - 1 : " => 40.0, "charging_1" => 20.0]]
+            "hard" => ["hard", 40.0, ["Cleanning Cycle - 1" => 40.0, "Charging Cycle - 1" => 20.0]],
+            "carpet" => ["carpet", 10.0, ["Cleanning Cycle - 1" => 20.0, "Charging Cycle - 1" => 10.0]]
         ];
     }
 }

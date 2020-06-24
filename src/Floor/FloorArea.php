@@ -1,4 +1,7 @@
 <?php
+namespace App\Floor;
+use Exception;
+
 class FloorArea 
 {
 

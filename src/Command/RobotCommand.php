@@ -1,4 +1,7 @@
 <?php
+namespace App\Command;
+
+use App\Cleanning\CleaningRobot;
 
 class RobotCommand 
 {
@@ -25,14 +28,40 @@ class RobotCommand
         if ($floorCheck and $areaCheck) 
         {
             $robot = new CleaningRobot($floor, $area);
+            
             $tasks = $robot->run();
+            $total = array_sum($tasks);
+            echo "\n\n\t*** Total Time for Apartment Clenning (cleanning + charging) : ".array_sum($tasks) . " seconds ***";
+            $progress = 0;
             foreach ($tasks as $taskType => $taskTime) 
             {
-                echo "\n\t".$taskType . " : " . $taskTime . "s";
-                sleep(intval($taskTime));
+                echo "\n\t".$taskType . " Started, It will take ".$taskTime." seconds" ;
+                $init_time = 1.0;
+                $i = $progress;
+
+                while(round($init_time,1) <= round($taskTime,1))
+                {
+                    echo "\n \t  ";
+                    $progress = $total-$i;
+                    sleep(intval(1));
+                    self::progress_bar($progress,$total);
+                    $i++;
+                    $init_time++;
+                }
+                $progress = $i;
             }
-            echo "\n\n------- Cleanning Completed -------- \n\t". date("d-m-Y H:i:s") . "\n";
+            
+            echo "\n"; self::progress_bar(0,$total);
+            echo "\n\n------- Cleanning Completed -------- \n\t". date("d-m-Y H:i:s") . "\n";            
         }
+    }
+
+    public static function progress_bar($done, $total) 
+    {
+        $perc = floor(($done / $total) * 100);
+        $left = 100 - $perc;
+        $write = sprintf(" \033[0G\033[2K[%'*{$perc}s %-{$left}s] - $perc%% Pending - $done secs left", "", "");
+        fwrite(STDERR, $write);
     }
 
     /* Validation for Floor Type. 
@@ -40,6 +69,7 @@ class RobotCommand
     */
     private function checkFloorType($floorType) 
     {
+        // echo "string"; print_r(CleaningRobot::FLOOR_TYPES); exit();
         if (array_key_exists($floorType, CleaningRobot::FLOOR_TYPES)) 
         {
             return TRUE;

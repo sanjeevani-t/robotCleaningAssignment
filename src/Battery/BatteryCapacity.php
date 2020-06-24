@@ -1,4 +1,5 @@
 <?php
+namespace App\Battery;
 
 class BatteryCapacity 
 {

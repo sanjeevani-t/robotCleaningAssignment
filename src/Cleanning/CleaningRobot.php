@@ -1,4 +1,8 @@
 <?php
+namespace App\Cleanning;
+
+use App\Floor\FloorArea;
+use App\Battery\BatteryCapacity;
 
 class CleaningRobot 
 {
@@ -36,11 +40,11 @@ class CleaningRobot
             //cleaning
             $this->floorArea->clean($area);
             $this->batteryCapacity->work($cleaningTime);
-            $tasks["cleanning - " . $i] = $cleaningTime;
+            $tasks["Cleanning Cycle - " . $i] = $cleaningTime;
             
             //Charging
             $timeToCharge = $this->batteryCapacity->charge();
-            $tasks["charging - " . $i] = $timeToCharge;
+            $tasks["Charging Cycle - " . $i] = round($timeToCharge);
             if ($this->floorArea->isCleaned()) {
                 break;
             }
